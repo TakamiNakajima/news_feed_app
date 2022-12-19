@@ -6,7 +6,6 @@ import 'package:news_feed/data/search_type.dart';
 import 'package:news_feed/main.dart';
 import 'package:news_feed/models/model/news_model.dart';
 import 'package:news_feed/util/extentions.dart';
-import 'package:news_feed/util/extentions.dart';
 
 class NewsRepository {
 

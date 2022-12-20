@@ -4,6 +4,7 @@ import 'package:news_feed/data/category_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_feed/data/search_type.dart';
 import 'package:news_feed/main.dart';
+import 'package:news_feed/models/db/dao.dart';
 import 'package:news_feed/models/model/news_model.dart';
 import 'package:news_feed/util/extentions.dart';
 
@@ -11,6 +12,10 @@ class NewsRepository {
 
   static const BASE_URL = "https://newsapi.org/v2/top-headlines?country=jp";
   static const API_KEY = "db86cf103d97471ca4d8784a046e0f1e";
+
+  final NewsDao _dao;
+
+  NewsRepository({dao}): _dao = dao;
 
   Future<List<Article>> getNews({required SearchType searchType, String? keyword, Category? category}) async {
     List<Article> results = [];
@@ -44,11 +49,10 @@ class NewsRepository {
   }
 
   Future<List<Article>> insertAndReadFromDB(responseBody) async{
-    final dao = myDatabase.newsDao;
     final articles = News.fromJson(responseBody).articles;
 
     //Webから取得した記事リスト（Dartのモデルクラス：Article）をDBのテーブルクラス（Articles）に変換してDB登録・DBから取得
-    final articleRecords = await dao.insertAndReadNewsFromDB(articles.toArticleRecords(articles));
+    final articleRecords = await _dao.insertAndReadNewsFromDB(articles.toArticleRecords(articles));
 
     //DBから取得したデータをモデルクラスに再変換して返す
     return articleRecords.toArticles(articleRecords);

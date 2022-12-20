@@ -5,7 +5,9 @@ import 'package:news_feed/models/model/news_model.dart';
 import 'package:news_feed/repository/news_repository.dart';
 
 class NewsListViewModel extends ChangeNotifier {
-  final NewsRepository _repository = NewsRepository();
+  final NewsRepository _repository;
+
+  NewsListViewModel({repository}): _repository = repository;
 
   SearchType _searchType = SearchType.CATEGORY;
   SearchType get searchType => _searchType;
